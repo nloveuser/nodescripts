@@ -107,6 +107,22 @@ place_xray() {
     echo "Xray files installed"
 }
 
+download_alternative_geo_files() {
+    echo "Downloading alternative geoip_alt.dat from runetfreedom..."
+    if ! curl -L -o "/usr/local/share/xray/geoip_alt.dat" "https://github.com/runetfreedom/russia-v2ray-rules-dat/releases/download/202604161045/geoip.dat"; then
+        echo 'warning: Failed to download alternative geoip_alt.dat'
+        return 1
+    fi
+    
+    echo "Downloading alternative geosite_alt.dat from runetfreedom..."
+    if ! curl -L -o "/usr/local/share/xray/geosite_alt.dat" "https://github.com/runetfreedom/russia-v2ray-rules-dat/releases/download/202604161045/geosite.dat"; then
+        echo 'warning: Failed to download alternative geosite_alt.dat'
+        return 1
+    fi
+    
+    echo "Alternative geo files downloaded successfully as geoip_alt.dat and geosite_alt.dat"
+}
+
 check_if_running_as_root
 identify_the_operating_system_and_architecture
 
@@ -118,3 +134,6 @@ extract_xray
 place_xray
 
 "rm" -rf "$TMP_DIRECTORY"
+
+# Download alternative geo files as geoip_alt.dat and geosite_alt.dat
+download_alternative_geo_files
